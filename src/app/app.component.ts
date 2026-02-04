@@ -1,12 +1,15 @@
+import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
+  standalone:true,
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'ProjectFrontEnd';
+  title = 'Room Reservation App';
 }

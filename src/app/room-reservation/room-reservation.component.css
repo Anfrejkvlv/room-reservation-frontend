@@ -1,0 +1,114 @@
+.example-drag-tabs.cdk-drop-list-dragging {
+  pointer-events: none;
+}
+
+.example-drag-tabs-preview.cdk-drag-animating {
+  transition: all 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.mat-mdc-tab.example-drag-tabs-preview {
+  outline: dashed 1px #ccc;
+  outline-offset: 4px;
+}
+
+.example-drag-tabs .cdk-drag-placeholder {
+  opacity: 0.5;
+}
+
+.ctabs{
+  padding: 1% !important;
+}
+
+section {
+  display: flex;
+  align-items: center;
+}
+.example-button-row {
+  max-width: 600px;
+}
+
+.example-button-row .mat-mdc-button-base {
+  margin: 8px 8px 8px 0;
+}
+
+.example-flex-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+
+.contenu1, .contenu{
+  padding: 2% !important;
+
+}
+
+.contenu{
+  width: 80%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+
+
+td, th {
+  width: 25%;
+}
+
+.filtre, th{
+  position: static;
+}
+
+
+
+td{
+  background: rgb(247, 201, 201) !important;
+}
+
+.tabl1{
+  width: 100% !important;
+}
+
+.form{
+  width: 50% !important;
+}
+
+.form1{
+  width: 20%;
+}
+
+mat-icon{
+  color: warn !important;
+}
+
+
+/* Style inputs */
+  input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Style the submit button */
+input[type=submit] {
+  width: 100%;
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Add a background color to the submit button on mouse-over */
+input[type=submit]:hover {
+  background-color: #45a049;
+}
