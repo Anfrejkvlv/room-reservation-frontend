@@ -38,13 +38,10 @@ section {
 }
 
 
-.contenu1, .contenu{
-  padding: 2% !important;
 
-}
-
-.contenu{
-  width: 80%;
+.contenu1{
+  justify-content: center;
+  display: block;
 }
 
 .mat-mdc-form-field {
@@ -68,17 +65,7 @@ td{
   background: rgb(247, 201, 201) !important;
 }
 
-.tabl1{
-  width: 100% !important;
-}
 
-.form{
-  width: 50% !important;
-}
-
-.form1{
-  width: 20%;
-}
 
 mat-icon{
   color: warn !important;

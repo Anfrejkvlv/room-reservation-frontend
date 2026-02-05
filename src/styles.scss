@@ -11,6 +11,10 @@ body {
   color: var(--mat-sys-on-surface);
 }
 
+.btn-actions{
+  display: flex;
+}
+
 
 html {
   @include mat.theme((
@@ -19,7 +23,7 @@ html {
       tertiary: mat.$orange-palette,
       theme-type: light,
     ),
-    typography: Roboto,
+    typography: Segoe UI Semibold,
     density: 0
   ));
 }

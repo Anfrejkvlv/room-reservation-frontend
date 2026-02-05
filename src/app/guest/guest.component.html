@@ -1,3 +1,164 @@
-<p>
-  guest works!
-</p>
+<div class="d-flex flex-row mb-3">
+  <div class="contenu1 p-2">
+
+    <mat-form-field class="filtre">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup3)="applyGuestFilter($event)" placeholder="Ex. John Doe" #input>
+    </mat-form-field>
+
+    <div class="mat-elevation-z8 ">
+      <table mat-table [dataSource]="guestDataSource" class="gtable" matSort>
+
+        <!-- GuestId Column -->
+        <ng-container matColumnDef="guestId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-info"> GuestId </th>
+          <td mat-cell *matCellDef="let row"> {{row.guestId}} </td>
+        </ng-container>
+
+
+        <!-- FirstName Column -->
+        <ng-container matColumnDef="firstName">
+          <th class="bg-info" mat-header-cell *matHeaderCellDef mat-sort-header> FirstName</th>
+          <td mat-cell *matCellDef="let row"> {{row.firstName}} </td>
+        </ng-container>
+
+        <!-- LastName Column -->
+        <ng-container matColumnDef="lastName">
+          <th class="bg-info" mat-header-cell *matHeaderCellDef mat-sort-header> LastName</th>
+          <td mat-cell *matCellDef="let row"> {{row.lastName}} </td>
+        </ng-container>
+
+
+        <!-- Date Column -->
+        <ng-container matColumnDef="emailAddress">
+          <th class="bg-info" mat-header-cell *matHeaderCellDef mat-sort-header> Email Address</th>
+          <td mat-cell *matCellDef="let row"> {{row.emailAddress}} </td>
+        </ng-container>
+
+        <!-- Address Column -->
+        <ng-container matColumnDef="address">
+          <th class="bg-info" mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
+          <td mat-cell *matCellDef="let row"> {{row.address}} </td>
+        </ng-container>
+
+        <!-- Country Column -->
+        <ng-container matColumnDef="country">
+          <th class="bg-info" mat-header-cell *matHeaderCellDef mat-sort-header>Country</th>
+          <td mat-cell *matCellDef="let row"> {{row.country}} </td>
+        </ng-container>
+
+        <!-- State Column -->
+        <ng-container matColumnDef="state">
+          <th class="bg-info" mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
+          <td mat-cell *matCellDef="let row"> {{row.state}} </td>
+        </ng-container>
+
+        <!-- Phone Number Column -->
+        <ng-container matColumnDef="phoneNumber">
+          <th class="bg-info" mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</th>
+          <td mat-cell *matCellDef="let row"> {{row.phoneNumber}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th class="bg-info" mat-header-cell *matHeaderCellDef>Action</th>
+          <td  *matCellDef="let row;">
+              <section >
+                <div class="example-button-row" >
+                  <div class="btn-actions">
+                  <button aria-label="launch icon" mat-icon-button>
+                    <mat-icon>launch</mat-icon>
+                  </button>
+
+                  <button matFab aria-label="edit icon">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+
+                  <button matFab aria-label="delete icon">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  </div>
+                </div>
+              </section>
+          </td>
+
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="guestdisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: guestdisplayedColumns;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="9">No data matching the filter "{{input.value}}"</td>
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, guestDataSource.data.length]" aria-label="Select page of data"></mat-paginator>
+    </div>
+
+  </div>
+
+  <div class="guestForm p-2">
+      <h3>ADD NEW GUEST</h3>
+        <form [formGroup]="guestForm" (ngSubmit)="saveGuest()">
+
+
+            <mat-form-field>
+              <mat-label>First Name</mat-label>
+              <input  matInput formControlName="firstName" name="firstName"placeholder="Fisrt Name">
+              <mat-error *ngIf="guestForm.get('firstName')?.hasError('required')">
+                Champ obligatoire
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Last Name</mat-label>
+              <input  matInput formControlName="lastName" name="lastName" placeholder="Last Name">
+              <mat-error *ngIf="guestForm.get('lastName')?.hasError('required')">
+                Champ obligatoire
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Email Address</mat-label>
+              <input  matInput formControlName="emailAddress" name="emailAddress" placeholder="Email Address">
+              <mat-error *ngIf="guestForm.get('emailAddress')?.hasError('required')">
+                Champ obligatoire
+              </mat-error>
+            </mat-form-field>            <mat-form-field>
+              <mat-label>Address</mat-label>
+              <input  matInput formControlName="address" name="address" placeholder="Address">
+              <mat-error *ngIf="guestForm.get('emailAddress')?.hasError('required')">
+                Champ obligatoire
+              </mat-error>
+            </mat-form-field>            <mat-form-field>
+              <mat-label>Country</mat-label>
+              <input  matInput formControlName="country" name="country" placeholder="Country">
+              <mat-error *ngIf="guestForm.get('country')?.hasError('required')">
+                Champ obligatoire
+              </mat-error>
+            </mat-form-field>            <mat-form-field>
+              <mat-label>State</mat-label>
+              <input  matInput formControlName="state" name="state" placeholder="State">
+              <mat-error *ngIf="guestForm.get('state')?.hasError('required')">
+                Champ obligatoire
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Phone Number</mat-label>
+              <input  matInput formControlName="phoneNumber" name="phoneNumber" placeholder="Phone Number">
+              <mat-error *ngIf="guestForm.get('phoneNumber')?.hasError('required')">
+                Champ obligatoire
+              </mat-error>
+            </mat-form-field>
+
+            <input type="submit" value="Add Guest" [disabled]="guestForm.invalid">
+        </form>
+        <!-- Loading bar -->
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+      </div>
+</div>
+
+
+
+

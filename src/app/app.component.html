@@ -1,4 +1,50 @@
 <div class="header">
-  <h1>Room Reservation Management</h1>
+  <h1>ROOM RESERVATION MANAGEMENT</h1>
 </div>
-<router-outlet></router-outlet>
+
+<mat-tab-group
+  cdkDropList
+  cdkDropListOrientation="horizontal"
+  (cdkDropListDropped)="drop($event)"
+  cdkDropListElementContainer=".mat-mdc-tab-labels"
+  class="example-drag-tabs ctabs"
+  [(selectedIndex)]="selectedTabIndex"
+  animationDuration="0">
+  @for (tab of tabs; track $index) {
+
+
+    <mat-tab>
+      <ng-template mat-tab-label >
+        <span
+
+          cdkDrag
+          cdkDragPreviewClass="example-drag-tabs-preview"
+          cdkDragRootElement=".mat-mdc-tab">{{tab}}</span>
+      </ng-template>
+
+      @switch (tab) {
+        @case ("Room Reservation") {
+          <div class="roomR">
+            <app-room-reservation></app-room-reservation>
+          </div>
+        }
+
+        @case ("Room") {
+          <div >
+
+            <app-room></app-room>
+          </div>
+        }
+
+        @case ("Reservation") {
+          <app-reservation></app-reservation>
+        }
+
+        @case ("Guest") {
+          <app-guest></app-guest>
+        }
+      }
+
+    </mat-tab>
+  }
+</mat-tab-group>
