@@ -69,11 +69,11 @@
                     <mat-icon>launch</mat-icon>
                   </button>
 
-                  <button matFab aria-label="edit icon">
+                  <button matFab aria-label="edit icon" (click)="getGuestId(row.guestId)">
                     <mat-icon>edit</mat-icon>
                   </button>
 
-                  <button matFab aria-label="delete icon">
+                  <button matFab aria-label="delete icon" (click)="onDelete(row.guestId)">
                     <mat-icon>delete</mat-icon>
                   </button>
                   </div>
@@ -98,10 +98,9 @@
   </div>
 
   <div class="guestForm p-2">
+    @if (guestId()<=0) {
       <h3>ADD NEW GUEST</h3>
         <form [formGroup]="guestForm" (ngSubmit)="saveGuest()">
-
-
             <mat-form-field>
               <mat-label>First Name</mat-label>
               <input  matInput formControlName="firstName" name="firstName"placeholder="Fisrt Name">
@@ -155,7 +154,71 @@
             <input type="submit" value="Add Guest" [disabled]="guestForm.invalid">
         </form>
         <!-- Loading bar -->
-        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading()"></mat-progress-bar>
+      }
+        @if (guestId()>0) {
+        <div class="updateGuest">
+              <h3>UPDATE GUEST</h3>
+              <form [formGroup]="guestUpdateForm" (ngSubmit)="updateGuest()">
+
+
+                  <mat-form-field>
+                    <mat-label>First Name</mat-label>
+                    <input  matInput formControlName="firstName" name="firstName"placeholder="Fisrt Name">
+                    <mat-error *ngIf="guestUpdateForm.get('firstName')?.hasError('required')">
+                      Champ obligatoire
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <mat-label>Last Name</mat-label>
+                    <input  matInput formControlName="lastName" name="lastName" placeholder="Last Name">
+                    <mat-error *ngIf="guestUpdateForm.get('lastName')?.hasError('required')">
+                      Champ obligatoire
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <mat-label>Email Address</mat-label>
+                    <input  matInput formControlName="emailAddress" name="emailAddress" placeholder="Email Address">
+                    <mat-error *ngIf="guestUpdateForm.get('emailAddress')?.hasError('required')">
+                      Champ obligatoire
+                    </mat-error>
+                  </mat-form-field>            <mat-form-field>
+                    <mat-label>Address</mat-label>
+                    <input  matInput formControlName="address" name="address" placeholder="Address">
+                    <mat-error *ngIf="guestUpdateForm.get('emailAddress')?.hasError('required')">
+                      Champ obligatoire
+                    </mat-error>
+                  </mat-form-field>            <mat-form-field>
+                    <mat-label>Country</mat-label>
+                    <input  matInput formControlName="country" name="country" placeholder="Country">
+                    <mat-error *ngIf="guestUpdateForm.get('country')?.hasError('required')">
+                      Champ obligatoire
+                    </mat-error>
+                  </mat-form-field>            <mat-form-field>
+                    <mat-label>State</mat-label>
+                    <input  matInput formControlName="state" name="state" placeholder="State">
+                    <mat-error *ngIf="guestUpdateForm.get('state')?.hasError('required')">
+                      Champ obligatoire
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <mat-label>Phone Number</mat-label>
+                    <input  matInput formControlName="phoneNumber" name="phoneNumber" placeholder="Phone Number">
+                    <mat-error *ngIf="guestUpdateForm.get('phoneNumber')?.hasError('required')">
+                      Champ obligatoire
+                    </mat-error>
+                  </mat-form-field>
+
+                  <input type="submit" value="Update Guest" [disabled]="guestUpdateForm.invalid">
+                  <input type="submit" value="Cancel" class="bg-primary" (click)="onCancel()">
+              </form>
+              <!-- Loading bar -->
+              <mat-progress-bar mode="indeterminate" *ngIf="isLoading()"></mat-progress-bar>
+        </div>
+      }
       </div>
 </div>
 

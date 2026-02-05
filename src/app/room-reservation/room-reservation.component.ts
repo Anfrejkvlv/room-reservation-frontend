@@ -54,7 +54,7 @@ export class RoomReservationComponent implements OnInit,AfterViewInit {
 
   public rooms: RoomReservation[]=[];
 
-  displayedColumns: string[] = ['guestId', 'roomId', 'reservationId', 'firstName','lastName','name','roomNumber','bedInfo','date','actions'];
+  displayedColumns: string[] = ['guestId', 'roomId', 'reservationId', 'firstName','lastName','name','roomNumber','bedInfo','date'];
 
   public dataSource: MatTableDataSource<RoomReservation>=new MatTableDataSource<RoomReservation>([]);
 

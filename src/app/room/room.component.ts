@@ -53,7 +53,7 @@ export class RoomComponent implements OnInit,AfterViewInit {
   public roomList=signal<Room[]>([]);
 
   public rooms: Room[]=[];
-  isLoading=false;
+  isLoading=signal<boolean>(false);
 
   roomdisplayedColumns: string[] = ['roomId','name', 'roomNumber','bedInfo','actions'];
 
@@ -86,6 +86,13 @@ export class RoomComponent implements OnInit,AfterViewInit {
     roomId: new FormControl(0)
   });
 
+  roomUpdateForm=new FormGroup({
+    roomName:new FormControl('',Validators.required),
+    roomNumber:new FormControl('', Validators.required),
+    bedInfo:new FormControl('', Validators.required),
+    roomId: new FormControl(0)
+  });
+
   loadData():void{
     this.roomreservedService.roomsreseved$().subscribe({
       next:(response: Room[])=>{
@@ -105,7 +112,7 @@ export class RoomComponent implements OnInit,AfterViewInit {
       return;
     }
 
-    this.isLoading=true;
+    this.isLoading.set(true);
     const formData: Room={
       name: this.roomForm.value.roomName as string,
       roomNumber:this.roomForm.value.roomNumber as string,
@@ -114,35 +121,78 @@ export class RoomComponent implements OnInit,AfterViewInit {
     }
     this.roomreservedService.addRoom$(formData).subscribe({
         next:(response)=>{
-          this.isLoading=false;
+          this.roomForm.reset();
+          this.isLoading.set(false);
           this.loadData();
           this.snackbar.open("Room successfuly added","Fermer",{duration:3000,verticalPosition:'bottom'});
           console.log(response);
         },
       error:(err)=>{
-        this.snackbar.open(err,'Fermer',{duration:3000,verticalPosition:'bottom'});
+        this.snackbar.open(err.text,'Fermer',{duration:3000,verticalPosition:'bottom'});
       }
     });
   }
 
   updateRoom():void{
-
+    if(this.roomUpdateForm.invalid){
+      this.markFormGroupTouched();
+      return;
+    }
+    this.isLoading.set(true);
+    const room:Room={
+      roomId:this.roomUpdateForm.getRawValue().roomId as number,
+      name:this.roomUpdateForm.getRawValue().roomName as string,
+      roomNumber:this.roomUpdateForm.getRawValue().roomNumber as string,
+      bedInfo:this.roomUpdateForm.getRawValue().bedInfo as string
+    };
+    this.roomreservedService.updateRoom$(this.editData(),room).subscribe({
+      next:(response)=> {
+        this.isLoading.set(false);
+        this.editData.set(0);
+        this.loadData();
+        this.roomUpdateForm.reset();
+        this.snackbar.open(response,'Fermer',{duration:3000,verticalPosition:'bottom'});
+      },
+      error:(err)=>{
+        this.isLoading.set(false);
+        this.snackbar.open(err.error,'Fermer',{duration:3000,verticalPosition:'bottom'});
+      }
+    })
   }
 
   onEdit(id:number):void{
       this.editData.set(id);
+      const rooms=this.roomList();
+      const room: Room=rooms.find(room=>room.roomId===id) as Room;
+      this.roomUpdateForm.patchValue({
+        roomId:room.roomId,
+        roomName:room.name,
+        roomNumber:room.roomNumber,
+        bedInfo:room.bedInfo
+      })
   }
 
   deleteRoom(id:number):void{
-    this.roomreservedService.deleteRoom$(id).subscribe({
+
+    if(window.confirm("Are you sure ?")){
+      this.roomreservedService.deleteRoom$(id).subscribe({
       next:(response)=>{
         this.loadData();
+        this.editData.set(0);
         this.snackbar.open(response,"Fermer",{duration: 3000,verticalPosition:'bottom'});
       },
       error:(err)=>{
+        this.editData.set(0);
         this.snackbar.open(err,'Fermer',{duration:3000,verticalPosition:'bottom'});
       }
     });
+    }
+    this.loadData();
+  }
+
+  onCancel(){
+    this.loadData();
+    this.editData.set(0);
   }
 
   ngAfterViewInit() {

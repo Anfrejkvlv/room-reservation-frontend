@@ -21,6 +21,7 @@ import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatTabsModule} from '@angular/material/tabs';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { RoomReservation } from '../model/room-reservation';
 
 @Component({
   standalone:true,
@@ -58,7 +59,8 @@ export class ReservationComponent implements OnInit,AfterViewInit {
   public guestList=signal<Guest[]>([]);
   private roomreservedService=inject(RoomReservationService);
   private snackbar=inject(MatSnackBar);
-  isLoading=false;
+  isLoading=signal<boolean>(false);
+  reservId=signal<number>(0);
 
   reservationdisplayedColumns: string[] = ['reservationId','roomId','guestId','date','actions'];
 
@@ -81,6 +83,13 @@ export class ReservationComponent implements OnInit,AfterViewInit {
   }
 
   form=new FormGroup({
+    selectedGuestId:new FormControl(0,Validators.required),
+    selectedRoomId:new FormControl(0, Validators.required),
+    newdate:new FormControl('', Validators.required),
+    reservationId: new FormControl(0)
+  });
+
+  updateForm=new FormGroup({
     selectedGuestId:new FormControl(0,Validators.required),
     selectedRoomId:new FormControl(0, Validators.required),
     newdate:new FormControl('', Validators.required),
@@ -114,7 +123,7 @@ export class ReservationComponent implements OnInit,AfterViewInit {
       return;
     }
 
-    this.isLoading=true;
+    this.isLoading.set(true);
     const formData: Reservation={
       reservationId: 0,
       guestId:this.form.value.selectedGuestId as number,
@@ -123,9 +132,10 @@ export class ReservationComponent implements OnInit,AfterViewInit {
     }
     this.roomreservedService.reservations$(formData).subscribe({
         next:(response)=>{
-          this.isLoading=false;
+          this.isLoading.set(false);
           this.loadData();
           this.snackbar.open("Reservation successfuly added","Fermer",{duration:3000,verticalPosition:'bottom'});
+          this.form.reset();
 
           console.log(response);
         },
@@ -135,8 +145,71 @@ export class ReservationComponent implements OnInit,AfterViewInit {
     })
   }
 
-  ngAfterViewInit() {
+  onUpdate():void{
+    if(this.updateForm.invalid || this.reservId()<=0){
+      this.markFormGroupTouched();
+      return;
+    }
 
+    this.isLoading.set(true);
+    const data:Reservation={
+      reservationId:this.updateForm.getRawValue().reservationId as number,
+      guestId:this.updateForm.getRawValue().selectedGuestId as number,
+      roomId:this.updateForm.getRawValue().selectedRoomId as number,
+      date:this.updateForm.getRawValue().newdate as string
+    };
+    this.roomreservedService.updateReservation$(data.reservationId,data).subscribe({
+      next:(response)=>{
+        this.isLoading.set(false);
+        this.reservId.set(0);
+        this.updateForm.reset();
+        this.snackbar.open(response,'Fermer',{duration:3000,verticalPosition:'bottom'});
+      },
+      error:(err)=>{
+        this.isLoading.set(false);
+        this.reservId.set(0);
+        this.snackbar.open(err,'Fermer',{duration:3000,verticalPosition:'bottom'});
+      }
+    })
+  }
+
+  onEditReserv(id:number):void{
+    this.reservId.set(id);
+
+    const reserved=this.reservationList();
+    const reserve:Reservation=reserved.find(res=>res.reservationId===id) as Reservation;
+    this.updateForm.patchValue({
+      reservationId:reserve.reservationId,
+      newdate:reserve.date,
+      selectedGuestId:reserve.guestId,
+      selectedRoomId:reserve.roomId
+    });
+  }
+
+  onDelete(id:number):void{
+
+    if(window.confirm("Are you sure ?")){
+    this.roomreservedService.deleteReservation$(id).subscribe({
+      next:(response)=>{
+        this.loadData();
+        this.reservId.set(0);
+        this.snackbar.open(response,'Fermer',{duration:3000,verticalPosition:'bottom'});
+      },
+      error:(err)=>{
+        this.reservId.set(0);
+        this.snackbar.open(err,'Fermer',{duration:3000,verticalPosition:'bottom'});
+      }
+    });
+  }
+  this.loadData();
+  }
+
+  onCancel():void{
+    this.reservId.set(0);
+    this.loadData();
+  }
+
+  ngAfterViewInit() {
     this.reservationDataSource.paginator=this.paginator;
     this.reservationDataSource.sort=this.sort;
   }

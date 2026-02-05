@@ -50,32 +50,32 @@ addGuest$=(data:Guest)=><Observable<Guest>>this.http.post<Guest>(`${this.apiUrl}
   catchError(this.handleError)
 );
 
-updateReservation$=(reservationId:number,data:Reservation)=><Observable<Reservation>>this.http.put<Reservation>(`${this.apiUrl}/reservations/${reservationId}`,data).pipe(
+updateReservation$=(reservationId:number,data:Reservation)=><Observable<string>>this.http.put<string>(`${this.apiUrl}/reservations/${reservationId}`,data).pipe(
   tap(),
   catchError(this.handleError)
 );
 
-updateRoom$=(roomId:number,data:Room)=><Observable<Room>>this.http.put<Room>(`${this.apiUrl}/rooms/${roomId}`,data).pipe(
+updateRoom$=(roomId:number,data:Room)=><Observable<any>>this.http.put<any>(`${this.apiUrl}/rooms/${roomId}`,data).pipe(
   tap(),
   catchError(this.handleError)
 );
 
-updateGuest$=(guestId:number,data:Guest)=><Observable<Guest>>this.http.put<Guest>(`${this.apiUrl}/guests/${guestId}`,data).pipe(
+updateGuest$=(guestId:number,data:Guest)=><Observable<any>>this.http.put<any>(`${this.apiUrl}/guests/${guestId}`,data).pipe(
   tap(),
   catchError(this.handleError)
 );
 
-deleteReservation$=(reservationId:number)=><Observable<string>>this.http.delete<string>(`${this.apiUrl}/reservations/${reservationId}`).pipe(
+deleteReservation$=(reservationId:number)=><Observable<any>>this.http.delete<any>(`${this.apiUrl}/reservations/${reservationId}`).pipe(
   tap(),
   catchError(this.handleError)
 );
 
-deleteRoom$=(roomId:number)=><Observable<string>>this.http.delete<string>(`${this.apiUrl}/rooms/${roomId}`).pipe(
+deleteRoom$=(roomId:number)=><Observable<any>>this.http.delete<any>(`${this.apiUrl}/rooms/${roomId}`).pipe(
   tap(),
   catchError(this.handleError)
 );
 
-deleteGuest$=(guestId:number)=><Observable<string>>this.http.delete<string>(`${this.apiUrl}/guests/${guestId}`).pipe(
+deleteGuest$=(guestId:number)=><Observable<any>>this.http.delete<any>(`${this.apiUrl}/guests/${guestId}`).pipe(
   tap(),
   catchError(this.handleError)
 );

@@ -43,11 +43,11 @@
                     <mat-icon>launch</mat-icon>
                   </button>
 
-                  <button matFab aria-label="edit icon">
+                  <button matFab aria-label="edit icon" (click)="onEditReserv(row.reservationId)">
                     <mat-icon>edit</mat-icon>
                   </button>
 
-                  <button matFab aria-label="delete icon">
+                  <button matFab aria-label="delete icon" (click)="onDelete(row.reservationId)">
                     <mat-icon>delete</mat-icon>
                   </button>
                   </div>
@@ -72,6 +72,8 @@
   </div>
 
   <div class="reservForm p-2">
+
+    @if (reservId()<=0) {
     <h3>ADD NEW RESERVATION</h3>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <mat-form-field>
@@ -110,7 +112,53 @@
 
           <input type="submit" value="Add Reservation" [disabled]="form.invalid">
       </form>
-          <!-- Loading bar -->
-          <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+        <!-- Loading bar -->
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading()"></mat-progress-bar>
+    }
+        @if (reservId()>0) {
+        <div class="updateReserv">
+            <h3>UPDATE RESERVATION</h3>
+              <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+                  <mat-form-field>
+                    <mat-select placeholder="Guest" formControlName="selectedGuestId" name="guestId">
+                      <mat-option *ngFor="let guest of guestList()" [value]="guest.guestId">
+                        {{guest.firstName}} {{guest.lastName}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="updateForm.get('guest')?.hasError('required')">
+                      Champ obligatoire
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <mat-select placeholder="Room" formControlName="selectedRoomId" name="guestId">
+                      <mat-option *ngFor="let room of roomList()" [value]="room.roomId">
+                        {{room.name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="updateForm.get('roomId')?.hasError('required')">
+                      Champ obligatoire
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field >
+                    <mat-label>Date</mat-label>
+                    <input matInput formControlName="newdate" [matDatepicker]="picker" required>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-hint>Format: MM/DD/YYYY</mat-hint>
+                    <mat-error *ngIf="updateForm.get('newdate')?.hasError('required')">
+                      Champ obligatoire
+                    </mat-error>
+                  </mat-form-field>
+
+
+                  <input type="submit" value="Update" [disabled]="updateForm.invalid">
+                  <input type="submit" class="bg-primary" value="Cancel" (click)="onCancel()">
+              </form>
+                <!-- Loading bar -->
+                <mat-progress-bar mode="indeterminate" *ngIf="isLoading()"></mat-progress-bar>
+        </div>
+      }
   </div>
 </div>

@@ -72,6 +72,7 @@
   </div>
 
   <div class="form1 p-2">
+    @if (editData()<=0) {
       <h3>ADD NEW ROOM</h3>
         <form [formGroup]="roomForm" (ngSubmit)="saveRoom()">
 
@@ -103,16 +104,16 @@
             <input type="submit" value="Add Room" [disabled]="roomForm.invalid">
         </form>
         <!-- Loading bar -->
-        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-
-        @if (editData()>0) {
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading()"></mat-progress-bar>
+      }
+      @if (editData()>0) {
         <div class="updateRoom">
           <h3>UPDATE ROOM</h3>
-          <form [formGroup]="roomForm" (ngSubmit)="saveRoom()">
+          <form [formGroup]="roomUpdateForm" (ngSubmit)="updateRoom()">
               <mat-form-field>
                 <mat-label>Name</mat-label>
                 <input  matInput formControlName="roomName" name="roomName" placeholder="Room Name">
-                <mat-error *ngIf="roomForm.get('roomName')?.hasError('required')">
+                <mat-error *ngIf="roomUpdateForm.get('roomName')?.hasError('required')">
                   Champ obligatoire
                 </mat-error>
               </mat-form-field>
@@ -120,7 +121,7 @@
               <mat-form-field>
                 <mat-label>Room Number</mat-label>
                 <input  matInput formControlName="roomNumber" name="roomNumber" placeholder="Room Number">
-                <mat-error *ngIf="roomForm.get('roomNumber')?.hasError('required')">
+                <mat-error *ngIf="roomUpdateForm.get('roomNumber')?.hasError('required')">
                   Champ obligatoire
                 </mat-error>
               </mat-form-field>
@@ -128,18 +129,18 @@
               <mat-form-field>
                 <mat-label>Room Number</mat-label>
                 <input  matInput formControlName="bedInfo" name="bedInfo" placeholder="Bed Info">
-                <mat-error *ngIf="roomForm.get('bedInfo')?.hasError('required')">
+                <mat-error *ngIf="roomUpdateForm.get('bedInfo')?.hasError('required')">
                   Champ obligatoire
                 </mat-error>
               </mat-form-field>
 
-              <input type="submit" value="Add Room" [disabled]="roomForm.invalid">
+              <input type="submit" value="Update" [disabled]="roomUpdateForm.invalid">
+              <input type="submit" class="bg-primary" value="Cancel" (click)="onCancel()">
           </form>
           <!-- Loading bar -->
-          <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+          <mat-progress-bar mode="indeterminate" *ngIf="isLoading()"></mat-progress-bar>
         </div>
-        }
-
+      }
   </div>
 </div>
 
